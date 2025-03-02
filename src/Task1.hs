@@ -35,9 +35,7 @@ encode = reverse . foldl' f []
 -- []
 --
 decode :: [(Int, a)] -> [a]
-decode = foldl' f []
-  where
-    f acc (c, a) = acc ++ replicate c a
+decode = concatMap $ uncurry replicate
 
 
 -- | Rotates given finite list to the left for a given amount N
