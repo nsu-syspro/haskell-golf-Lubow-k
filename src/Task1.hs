@@ -1,5 +1,8 @@
 module Task1 where
 
+import Data.List (foldl')
+
+
 -- | Compresses given data using run-length encoding.
 --
 -- Usage example:
@@ -12,7 +15,13 @@ module Task1 where
 -- []
 --
 encode :: Eq a => [a] -> [(Int, a)]
-encode = error "TODO: define encode"
+encode = reverse . foldl' f []
+  where
+    f [] x = [(1, x)]
+    f prev@((c, y) : ys) x
+      | x == y    = (c + 1, y) : ys 
+      | otherwise = (1, x) : prev
+
 
 -- | Decompresses given data using run-length decoding.
 --
@@ -26,7 +35,10 @@ encode = error "TODO: define encode"
 -- []
 --
 decode :: [(Int, a)] -> [a]
-decode = error "TODO: define decode"
+decode = foldl' f []
+  where
+    f acc (c, a) = acc ++ replicate c a
+
 
 -- | Rotates given finite list to the left for a given amount N
 --
@@ -46,4 +58,5 @@ decode = error "TODO: define decode"
 -- ""
 --
 rotate :: Int -> [a] -> [a]
-rotate = error "TODO: define rotate"
+rotate n x = drop i x ++ take i x
+    where i = if null x then 0 else mod n $ length x
