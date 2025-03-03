@@ -1,6 +1,6 @@
 module Task1 where
 
-import Data.List (foldl')
+import Data.List (group)
 
 
 -- | Compresses given data using run-length encoding.
@@ -15,12 +15,7 @@ import Data.List (foldl')
 -- []
 --
 encode :: Eq a => [a] -> [(Int, a)]
-encode = reverse . foldl' f []
-  where
-    f [] x = [(1, x)]
-    f prev@((c, y) : ys) x
-      | x == y    = (c + 1, y) : ys 
-      | otherwise = (1, x) : prev
+encode = map (\x -> (length x, head x)) . group 
 
 
 -- | Decompresses given data using run-length decoding.
